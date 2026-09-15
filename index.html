@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDP BCAF - TES ONLINE WEBSITE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+
+    <!-- Navbar / Role Switcher -->
+    <nav class="bg-blue-700 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                PT JKL - Portal Kredit
+            </h1>
+            <div class="flex flex-wrap gap-2 text-sm">
+                <span class="py-1 px-2 font-semibold">Login sbg:</span>
+                <button onclick="switchRole('marketing')" id="btn-marketing" class="nav-btn bg-blue-900 hover:bg-blue-800 px-3 py-1 rounded transition">Marketing</button>
+                <button onclick="switchRole('atasan')" id="btn-atasan" class="nav-btn bg-blue-500 hover:bg-blue-800 px-3 py-1 rounded transition">Atasan</button>
+                <button onclick="switchRole('konsumen')" id="btn-konsumen" class="nav-btn bg-blue-500 hover:bg-blue-800 px-3 py-1 rounded transition">Konsumen (TTD)</button>
+                <button onclick="switchRole('admin')" id="btn-admin" class="nav-btn bg-blue-500 hover:bg-blue-800 px-3 py-1 rounded transition">Admin Backoffice</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 mt-6">
+        
+        <!-- ================= PANEL MARKETING (PROSES 4 & 8) ================= -->
+        <section id="panel-marketing" class="role-panel block">
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-blue-600">
+                <h2 class="text-2xl font-bold mb-1">Dashboard Marketing</h2>
+                <p class="text-sm text-gray-500 mb-6">Proses 4: Input pengajuan baru & upload dokumen.</p>
+                
+                <form id="form-pengajuan" onsubmit="submitPengajuan(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Data Konsumen -->
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <h3 class="font-bold text-blue-700 mb-3 border-b pb-2">1. Data Konsumen</h3>
+                            <input type="text" id="nama" placeholder="Nama Lengkap" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" id="nik" placeholder="Nomor Induk Kependudukan (NIK)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            <label class="text-xs text-gray-500 block mb-1">Tanggal Lahir</label>
+                            <input type="date" id="tgl-lahir" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+
+                        <!-- Data Kendaraan -->
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <h3 class="font-bold text-blue-700 mb-3 border-b pb-2">2. Data Kendaraan</h3>
+                            <input type="text" id="merk" placeholder="Merk Kendaraan (Contoh: Honda)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" id="tipe" placeholder="Tipe (Contoh: Brio Satya E)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            <input type="number" id="harga" placeholder="Harga OTR (Rp)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+
+                        <!-- Data Pinjaman & Dokumen -->
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <h3 class="font-bold text-blue-700 mb-3 border-b pb-2">3. Pinjaman & Dokumen</h3>
+                            <input type="number" id="dp" placeholder="Down Payment (Rp)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            <input type="number" id="tenor" placeholder="Tenor (Bulan)" class="w-full mb-3 p-2 text-sm border rounded focus:ring-2 focus:ring-blue-500" required>
+                            
+                            <div class="space-y-2 mt-4">
+                                <div>
+                                    <label class="text-xs font-semibold text-gray-700">Upload KTP & KK (PDF/JPG)</label>
+                                    <input type="file" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:border-0 file:text-xs file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-semibold text-gray-700">Upload Bukti Bayar Tanda Jadi</label>
+                                    <input type="file" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:border-0 file:text-xs file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow transition">
+                        Submit Data Pengajuan
+                    </button>
+                </form>
+            </div>
+
+            <!-- Bagian Proses 8: Upload TTD Basah (Opsional jika tidak e-sign) -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-yellow-500 mt-6">
+                <h3 class="text-lg font-bold mb-2">Proses 8: Upload Dokumen TTD Basah</h3>
+                <p class="text-sm text-gray-500 mb-4">Jika konsumen tidak menggunakan E-Signature, upload foto dokumen TTD basah di sini.</p>
+                <div class="flex gap-4">
+                    <select id="select-upload-ttd" class="p-2 border rounded text-sm flex-1">
+                        <option value="">-- Pilih ID Pengajuan --</option>
+                    </select>
+                    <input type="file" class="p-2 border rounded text-sm flex-1">
+                    <button onclick="uploadTTDBasah()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded font-semibold text-sm">Upload & Cairkan</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PANEL ATASAN (PROSES 5 & 6) ================= -->
+        <section id="panel-atasan" class="role-panel hidden">
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-indigo-600">
+                <h2 class="text-2xl font-bold mb-1">Dashboard Atasan Marketing</h2>
+                <p class="text-sm text-gray-500 mb-6">Proses 5: Review data digital dan proses persetujuan. Proses 6 berjalan otomatis di belakang layar.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-slate-200">
+                        <thead class="bg-slate-100 text-sm">
+                            <tr>
+                                <th class="p-3 border text-left">ID Pengajuan</th>
+                                <th class="p-3 border text-left">Data Konsumen</th>
+                                <th class="p-3 border text-left">Detail Kredit</th>
+                                <th class="p-3 border text-center">Status</th>
+                                <th class="p-3 border text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-atasan" class="text-sm">
+                            <!-- Render via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PANEL KONSUMEN (PROSES 7) ================= -->
+        <section id="panel-konsumen" class="role-panel hidden">
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-teal-600 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold mb-1 text-center">E-Signature Dokumen</h2>
+                <p class="text-sm text-gray-500 mb-6 text-center">Proses 7: Tablet/HP Konsumen untuk Tanda Tangan Digital.</p>
+                
+                <div id="list-konsumen-ttd" class="space-y-4">
+                    <!-- Render via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PANEL ADMIN BACKOFFICE (PROSES AKHIR) ================= -->
+        <section id="panel-admin" class="role-panel hidden">
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-green-600">
+                <h2 class="text-2xl font-bold mb-1">Dashboard Admin Backoffice</h2>
+                <p class="text-sm text-gray-500 mb-6">Menerima hasil akhir yang sudah TTD untuk proses Pencairan Dana.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-slate-200">
+                        <thead class="bg-slate-100 text-sm">
+                            <tr>
+                                <th class="p-3 border text-left">ID Pengajuan</th>
+                                <th class="p-3 border text-left">Nama Konsumen</th>
+                                <th class="p-3 border text-left">Kendaraan</th>
+                                <th class="p-3 border text-center">Dokumen PO & Kontrak</th>
+                                <th class="p-3 border text-center">Status Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-admin" class="text-sm">
+                            <!-- Render via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script Logika -->
+    <script>
+        // State Management
+        let database = [];
+        let idCounter = 101;
+
+        // Formatter Rupiah
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+
+        // 1. Navigation Logic
+        function switchRole(role) {
+            document.querySelectorAll('.role-panel').forEach(panel => panel.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.replace('bg-blue-900', 'bg-blue-500'));
+            
+            document.getElementById(`panel-${role}`).classList.remove('hidden');
+            document.getElementById(`btn-${role}`).classList.replace('bg-blue-500', 'bg-blue-900');
+
+            if(role === 'atasan') renderTableAtasan();
+            if(role === 'konsumen') renderListKonsumen();
+            if(role === 'admin') renderTableAdmin();
+            if(role === 'marketing') updateDropdownMarketing();
+        }
+
+        // 2. PROSES 4: Submit Pengajuan (Marketing)
+        function submitPengajuan(e) {
+            e.preventDefault();
+            const data = {
+                id: `REQ-${idCounter++}`,
+                nama: document.getElementById('nama').value,
+                nik: document.getElementById('nik').value,
+                merk: document.getElementById('merk').value,
+                tipe: document.getElementById('tipe').value,
+                harga: document.getElementById('harga').value,
+                dp: document.getElementById('dp').value,
+                tenor: document.getElementById('tenor').value,
+                status: 'Menunggu Approval Atasan',
+                docGenerated: false
+            };
+            database.push(data);
+            alert(`Berhasil! Data ${data.nama} disubmit. Notifikasi dikirim ke Atasan.`);
+            e.target.reset();
+            updateDropdownMarketing();
+        }
+
+        // 3. PROSES 5 & 6: Atasan View & Action
+        function renderTableAtasan() {
+            const tbody = document.getElementById('tbody-atasan');
+            tbody.innerHTML = '';
+            
+            if(database.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">Tidak ada pengajuan.</td></tr>';
+                return;
+            }
+
+            database.forEach((item, index) => {
+                let aksi = item.status === 'Menunggu Approval Atasan' 
+                    ? `<button onclick="approve(${index})" class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 mb-1 w-full">Approve</button>
+                       <button onclick="reject(${index})" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 w-full">Reject</button>`
+                    : `<span class="text-xs text-gray-400 italic">Selesai</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-3 border font-bold text-blue-700">${item.id}</td>
+                        <td class="p-3 border">
+                            <strong>${item.nama}</strong><br>
+                            <span class="text-xs text-gray-500">NIK: ${item.nik}</span>
+                        </td>
+                        <td class="p-3 border">
+                            ${item.merk} ${item.tipe}<br>
+                            <span class="text-xs text-gray-500">OTR: ${formatRp(item.harga)} | ${item.tenor} Bln</span>
+                        </td>
+                        <td class="p-3 border text-center"><span class="px-2 py-1 bg-slate-200 rounded text-xs">${item.status}</span></td>
+                        <td class="p-3 border text-center">${aksi}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function approve(index) {
+            database[index].status = 'Menunggu TTD Konsumen';
+            database[index].docGenerated = true; // PROSES 6: Auto Generation
+            
+            alert(`✅ PROSES 5 & 6 BERHASIL!\nPengajuan di-Approve.\n\nSistem secara otomatis Men-generate:\n📄 Dokumen_Kontrak_${database[index].id}.pdf\n📄 Dokumen_PO_${database[index].id}.pdf`);
+            renderTableAtasan();
+        }
+
+        function reject(index) {
+            database[index].status = 'Ditolak';
+            renderTableAtasan();
+        }
+
+        // 4. PROSES 7: Konsumen E-Signature
+        function renderListKonsumen() {
+            const list = document.getElementById('list-konsumen-ttd');
+            list.innerHTML = '';
+            
+            const pendingTTD = database.filter(item => item.status === 'Menunggu TTD Konsumen');
+            
+            if(pendingTTD.length === 0) {
+                list.innerHTML = '<div class="p-4 text-center text-gray-500 border rounded">Belum ada dokumen yang perlu ditandatangani.</div>';
+                return;
+            }
+
+            pendingTTD.forEach(item => {
+                const originalIndex = database.findIndex(db => db.id === item.id);
+                list.innerHTML += `
+                    <div class="border p-4 rounded-lg bg-slate-50 flex flex-col items-center">
+                        <div class="w-full text-left mb-4">
+                            <h4 class="font-bold text-lg">${item.nama}</h4>
+                            <p class="text-xs text-gray-500">ID: ${item.id} | Pembelian: ${item.merk} ${item.tipe}</p>
+                            <div class="mt-2 text-sm p-2 bg-blue-100 rounded text-blue-800 border border-blue-200">
+                                📎 Dokumen Kontrak (Siap TTD)<br>
+                                📎 Dokumen PO (Siap TTD)
+                            </div>
+                        </div>
+                        <div class="w-full h-32 border-2 border-dashed border-gray-400 bg-white flex items-center justify-center text-gray-400 rounded cursor-crosshair mb-4">
+                            Area Gambar TTD Digital
+                        </div>
+                        <button onclick="signDigital(${originalIndex})" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 rounded">
+                            Simpan E-Signature (Proses 7 & 8)
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function signDigital(index) {
+            database[index].status = 'Siap Cair';
+            alert(`✅ PROSES 7 & 8 BERHASIL (OTOMATIS)!\n\n1. Dokumen PO digital langsung di-email ke Dealer.\n2. Dokumen tersimpan dengan status "Signed".\n3. Status pengajuan berubah menjadi "Siap Cair" untuk Admin Backoffice.`);
+            renderListKonsumen();
+        }
+
+        // 5. PROSES 8 (Alternatif): Upload TTD Basah oleh Marketing
+        function updateDropdownMarketing() {
+            const select = document.getElementById('select-upload-ttd');
+            select.innerHTML = '<option value="">-- Pilih ID Pengajuan (Menunggu TTD) --</option>';
+            
+            database.forEach((item, index) => {
+                if(item.status === 'Menunggu TTD Konsumen') {
+                    select.innerHTML += `<option value="${index}">${item.id} - ${item.nama}</option>`;
+                }
+            });
+        }
+
+        function uploadTTDBasah() {
+            const selectVal = document.getElementById('select-upload-ttd').value;
+            if(selectVal === "") {
+                alert("Pilih data pengajuan terlebih dahulu!");
+                return;
+            }
+            database[selectVal].status = 'Siap Cair';
+            alert(`✅ PROSES 8 MANUAL BERHASIL!\nDokumen TTD Basah berhasil di-upload oleh Marketing.\nStatus berubah menjadi "Siap Cair".`);
+            updateDropdownMarketing();
+        }
+
+        // 6. PROSES AKHIR: Admin Backoffice View
+        function renderTableAdmin() {
+            const tbody = document.getElementById('tbody-admin');
+            tbody.innerHTML = '';
+            
+            if(database.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">Belum ada data.</td></tr>';
+                return;
+            }
+
+            database.forEach(item => {
+                let pdfStatus = item.docGenerated 
+                    ? `<span class="text-green-600 text-xs font-bold">✔ PDF Generated (Auto)</span>` 
+                    : `<span class="text-red-500 text-xs">Belum ada</span>`;
+                
+                let badge = item.status === 'Siap Cair' ? 'bg-green-100 text-green-700 font-bold' : 'bg-slate-100 text-slate-500';
+
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-3 border font-bold">${item.id}</td>
+                        <td class="p-3 border">${item.nama}</td>
+                        <td class="p-3 border">${item.merk} ${item.tipe}</td>
+                        <td class="p-3 border text-center">${pdfStatus}</td>
+                        <td class="p-3 border text-center"><span class="px-2 py-1 rounded text-xs ${badge}">${item.status}</span></td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
